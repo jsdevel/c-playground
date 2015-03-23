@@ -11,23 +11,27 @@ struct array_struct {
 };
 
 Array * pushInt(Array * array, int item) {
-  if (array->used + 1 > array->size) {
-    array->size = array->size + 10;
+  if (array->elements == NULL) {
+    array->elements = malloc(sizeof(int) * 10);
+  } else if (array->used + 1 > array->size) {
     array->elements = realloc(array->elements, sizeof(int) * array->size);
   }
 
   ((int*)array->elements)[array->used] = item;
+  array->size = array->size + 10;
   array->used = array->used + 1;
   return array;
 }
 
 Array * pushString(Array * array, char * item) {
-  if (array->used + 1 > array->size) {
-    array->size = array->size + 10;
+  if (array->elements == NULL) {
+    array->elements = malloc(sizeof(char*) * 10);
+  } else if (array->used + 1 > array->size) {
     array->elements = realloc(array->elements, sizeof(char*) * array->size);
   }
 
   ((char**)array->elements)[array->used] = item;
+  array->size = array->size + 10;
   array->used = array->used + 1;
   return array;
 }
@@ -40,7 +44,7 @@ Array * forEach(Array * array, void (*fn)()) {
   return array;
 }
 
-Array newBasicArray() {
+Array newArray() {
   Array array;
   array.size = 0;
   array.used = 0;
@@ -49,21 +53,18 @@ Array newBasicArray() {
 }
 
 Array newIntArray() {
-  Array array = newBasicArray();
+  Array array = newArray();
   array.push = &pushInt;
-  array.elements = malloc(0);
   return array;
 }
 
 Array newStringArray() {
-  Array array = newBasicArray();
+  Array array = newArray();
   array.push = &pushString;
-  array.elements = malloc(sizeof(char*));
   return array;
 }
 
 void printIntElement(Array * array, int index) {
-  printf("Index: %i", index);
   printf("Index: %i, Element: %i\n", index, ((int*)array->elements)[index]);
 }
 
