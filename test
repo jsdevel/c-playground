@@ -1,0 +1,5 @@
+#!/bin/bash
+
+mkdir -p build
+cc -O2 -o build/array array.c
+./build/array
