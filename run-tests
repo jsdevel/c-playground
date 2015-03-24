@@ -1,0 +1,10 @@
+#!/bin/bash
+
+SCRIPT_DIR=$(dirname $(readlink -f ${BASH_SOURCE[0]}))
+INCLUDE_DIR=$SCRIPT_DIR/src/include
+
+make -s --always-make test
+
+for test in `find build/*`;do
+  $test
+done
