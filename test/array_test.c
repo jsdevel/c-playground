@@ -1,7 +1,10 @@
 #include <array.h>
 #include <tdd.h>
 
-int printInt(Array * array, int element) {
+int printInt(int * element, int index, Array * array) {
+  printf("%i\n", *element);
+  printf("%i\n", index);
+  printf("%i\n", array->size);
 }
 
 int push_should_increase_elements_size_accordingly() {
@@ -13,7 +16,7 @@ int push_should_increase_elements_size_accordingly() {
   }
 
   ASSERT(ints.used == 1000);
-  ASSERT(ints.size == 10000);
+  ASSERT(ints.size == 1000);
 
   return 0;
 }
@@ -24,16 +27,15 @@ int elements_should_be_NULL_by_default() {
   return 0;
 }
 
-int forEach_should_iterate_over_the_items() {
+int forEach_should_iterate_over_the_items_and_return_the_array() {
   int count;
   Array ints = newIntArray();
   ints.push(&ints, 5);
-  ints.forEach(&ints, printInt);
-
+  ASSERT(ints.forEach(&ints, printInt) == &ints);
   return 0;
 }
 
-int creating_an_string_array_should_be_possible() {
+int creating_a_string_array_should_be_possible() {
   Array chars = newStringArray();
   chars.push(&chars, "asdf");
   chars.push(&chars, "fred");
@@ -46,15 +48,17 @@ int creating_an_string_array_should_be_possible() {
 
 int reset_should_free_elements_and_reassign_it_a_value_of_NULL() {
   Array ints = newIntArray();
-  ASSERT(ints.push(&ints, 5)->reset(&ints)->elements == NULL);
+  ints.push(&ints, 5);
+  ints.reset(&ints);
+  ASSERT(ints.elements == NULL);
   return 0;
 }
 
 #define TDD_SUITE_NAME "Array_"
 int main(void) {
-  TEST(push_should_increase_elements_size_accordingly);
+  TEST(creating_a_string_array_should_be_possible);
   TEST(elements_should_be_NULL_by_default);
-  TEST(forEach_should_iterate_over_the_items);
-  //TEST(reset_should_free_elements_and_reassign_it_a_value_of_NULL);
-  TEST(creating_an_string_array_should_be_possible);
+  TEST(forEach_should_iterate_over_the_items_and_return_the_array);
+  TEST(push_should_increase_elements_size_accordingly);
+  TEST(reset_should_free_elements_and_reassign_it_a_value_of_NULL);
 }
