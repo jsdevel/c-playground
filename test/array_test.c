@@ -7,6 +7,15 @@ int printInt(int * element, int index, Array * array) {
   printf("%i\n", array->size);
 }
 
+int get_should_return_the_right_element() {
+  Array strings = newStringArray();
+  strings.push(&strings, "asdf");
+  ASSERT(*(char**)strings.get(&strings, 0) == "asdf");
+  strings.unshift(&strings, "fred");
+  ASSERT(*(char**)strings.get(&strings, 0) == "fred");
+  return 0;
+}
+
 int push_should_increase_elements_size_accordingly() {
   int i;
   Array ints = newIntArray();
@@ -59,6 +68,7 @@ int main(void) {
   TEST(creating_a_string_array_should_be_possible);
   TEST(elements_should_be_NULL_by_default);
   TEST(forEach_should_iterate_over_the_items_and_return_the_array);
+  TEST(get_should_return_the_right_element);
   TEST(push_should_increase_elements_size_accordingly);
   TEST(reset_should_free_elements_and_reassign_it_a_value_of_NULL);
 }

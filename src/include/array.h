@@ -10,6 +10,7 @@ struct array_struct {
   int used;
   void  * elements;
   Array * (* forEach)();
+  void  * (* get)();
   Array * (* push)();
   Array * (* reset)();
   Array * (* unshift)();
@@ -65,6 +66,12 @@ static int handleSizeIncrease(Array * array, size_t bytes) {
   } \
   return array
 
+void * get(Array * array, int index) {
+  if (index < array->used) {
+    return array->elements + index;
+  }
+  return NULL;
+}
 
 static Array * reset(Array * array) {
   if (array->elements != NULL) {
@@ -112,6 +119,7 @@ Array newArray() {
   array.size = 0;
   array.used = 0;
   array.elements = NULL;
+  array.get = &get;
   array.reset = &reset;
   return array;
 }
